@@ -1,8 +1,6 @@
 package handlers
 
 import (
-	// "bytes"
-
 	"fmt"
 	"html/template"
 	"log"
@@ -99,15 +97,8 @@ func CreateArticelePage(w http.ResponseWriter, r *http.Request) {
 	check(err)
 
 	article := dbhandler.GetOneArticle(*dbsession, mtitle)
-	// fmt.Println(article)
 
 	err = t.Execute(w, article)
 	check(err)
-	// err = t.ExecuteTemplate(w, t, article)
-	// if err != nil {
-	// 	http.Error(w, err.Error(), http.StatusInternalServerError)
-	// }
-
-	// fmt.Println(t, article)
 
 }
