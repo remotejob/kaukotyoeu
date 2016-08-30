@@ -67,7 +67,7 @@ func main() {
 	r.HandleFunc("/sitemap.xml", handlers.CheckServeSitemap)
 	r.HandleFunc("/job/{locale}/{themes}/{mtitle}.html", handlers.CreateArticelePage)
 	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", fs))
-
+	r.HandleFunc("/", handlers.CreateIndexPage)
 	log.Println("Listening at port 8080")
 
 	log.Fatal(http.ListenAndServe(":8080", r))

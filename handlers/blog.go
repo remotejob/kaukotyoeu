@@ -4,13 +4,16 @@ import (
 	"fmt"
 	"html/template"
 	"log"
+	"math/rand"
 	"net/http"
 	"path"
+	"strings"
 	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/remotejob/kaukotyoeu/dbhandler"
 	"github.com/remotejob/kaukotyoeu/domains"
+	shuffle "github.com/shogo82148/go-shuffle"
 	gcfg "gopkg.in/gcfg.v1"
 	mgo "gopkg.in/mgo.v2"
 )
@@ -99,6 +102,73 @@ func CreateArticelePage(w http.ResponseWriter, r *http.Request) {
 	article := dbhandler.GetOneArticle(*dbsession, mtitle)
 
 	err = t.Execute(w, article)
+	check(err)
+
+}
+
+//CreateIndexPage create Index
+func CreateIndexPage(w http.ResponseWriter, r *http.Request) {
+
+	sitefull := r.Host
+	site := strings.Split(sitefull, ":")[0]
+
+	if site == "localhost" {
+
+		site = "www.kaukotyo.eu"
+
+	}
+
+	mongoDBDialInfo := &mgo.DialInfo{
+		Addrs:     addrs,
+		Timeout:   60 * time.Second,
+		Database:  database,
+		Username:  username,
+		Password:  password,
+		Mechanism: mechanism,
+	}
+
+	dbsession, err := mgo.DialWithInfo(mongoDBDialInfo)
+
+	if err != nil {
+		panic(err)
+	}
+	defer dbsession.Close()
+
+	lphead := path.Join("templates", "header_home.html")
+	lp := path.Join("templates", "home_page.html")
+
+	t, err := template.ParseFiles(lp, lphead)
+	check(err)
+
+	allarticles := dbhandler.GetAllForStatic(*dbsession)
+
+	var numberstoshuffle []int
+	for num, _ := range allarticles {
+
+		numberstoshuffle = append(numberstoshuffle, num)
+
+	}
+	rand.Seed(time.Now().UTC().UnixNano())
+
+	shuffle.Ints(numberstoshuffle)
+
+	var articles_to_inject []domains.Articlefull
+	for c, i := range numberstoshuffle {
+
+		if allarticles[i].Site == site {
+
+			articles_to_inject = append(articles_to_inject, allarticles[i])
+
+		}
+
+		if c > 100 {
+
+			break
+		}
+
+	}
+
+	err = t.Execute(w, articles_to_inject)
 	check(err)
 
 }
