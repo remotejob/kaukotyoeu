@@ -32,42 +32,6 @@ var mechanismext string
 
 var sites []string
 
-//Employees title name
-// type Employees struct {
-// 	Title string
-// 	Name  string
-// }
-
-// func testhandler(w http.ResponseWriter, r *http.Request) {
-
-// 	mongoDBDialInfo := &mgo.DialInfo{
-// 		Addrs:     []string{"mymongo"},
-// 		Timeout:   60 * time.Second,
-// 		Database:  "admin",
-// 		Username:  "admin",
-// 		Password:  "admin1Rel",
-// 		Mechanism: "SCRAM-SHA-1",
-// 	}
-
-// 	session, err := mgo.DialWithInfo(mongoDBDialInfo)
-
-// 	defer session.Close()
-
-// 	session.SetMode(mgo.Monotonic, true)
-
-// 	c := session.DB("node-mongo-employee").C("employees")
-
-// 	result := []Employees{}
-// 	err = c.Find(nil).All(&result)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-
-// 	for _, empl := range result {
-// 		fmt.Fprintf(w, "Hi  %s %s", empl.Name, empl.Title)
-// 	}
-
-// }
 func init() {
 
 	var cfg domains.ServerConfig
