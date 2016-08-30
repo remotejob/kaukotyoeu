@@ -6,11 +6,9 @@ import (
 	"log"
 	"net/http"
 
-	gcfg "gopkg.in/gcfg.v1"
-
 	"github.com/gorilla/mux"
 	// _ "github.com/remotejob/godocker/statik"
-	"github.com/remotejob/kaukotyoeu/domains"
+
 	"github.com/remotejob/kaukotyoeu/handlers"
 	"github.com/remotejob/kaukotyoeu/handlers/robots"
 )
@@ -32,39 +30,40 @@ var mechanismext string
 
 var sites []string
 
-func init() {
+// func init() {
 
-	var cfg domains.ServerConfig
-	if err := gcfg.ReadFileInto(&cfg, "config.gcfg"); err != nil {
-		log.Fatalln(err.Error())
+// 	var cfg domains.ServerConfig
+// 	if err := gcfg.ReadFileInto(&cfg, "config.gcfg"); err != nil {
+// 		log.Fatalln(err.Error())
 
-	} else {
+// 	} else {
 
-		themes = cfg.General.Themes
-		locale = cfg.General.Locale
+// 		themes = cfg.General.Themes
+// 		locale = cfg.General.Locale
 
-		addrs = cfg.Dbmgo.Addrs
-		database = cfg.Dbmgo.Database
-		username = cfg.Dbmgo.Username
-		password = cfg.Dbmgo.Password
-		mechanism = cfg.Dbmgo.Mechanism
+// 		addrs = cfg.Dbmgo.Addrs
+// 		database = cfg.Dbmgo.Database
+// 		username = cfg.Dbmgo.Username
+// 		password = cfg.Dbmgo.Password
+// 		mechanism = cfg.Dbmgo.Mechanism
 
-		addrsext = cfg.Dbmgoext.Addrs
-		databaseext = cfg.Dbmgoext.Database
-		usernameext = cfg.Dbmgoext.Username
-		passwordext = cfg.Dbmgoext.Password
-		mechanismext = cfg.Dbmgoext.Mechanism
+// 		addrsext = cfg.Dbmgoext.Addrs
+// 		databaseext = cfg.Dbmgoext.Database
+// 		usernameext = cfg.Dbmgoext.Username
+// 		passwordext = cfg.Dbmgoext.Password
+// 		mechanismext = cfg.Dbmgoext.Mechanism
 
-		sites = cfg.Sites.Site
+// 		sites = cfg.Sites.Site
 
-	}
+// 	}
 
-}
+// }
 func main() {
 
 	r := mux.NewRouter()
 	r.HandleFunc("/robots.txt", robots.Generate)
 	r.HandleFunc("/sitemap.xml", handlers.CheckServeSitemap)
+	r.HandleFunc("/job/{locale}/{themes}/{mtitle}.html", handlers.CreateArticelePage)
 
 	log.Println("Listening at port 8080")
 

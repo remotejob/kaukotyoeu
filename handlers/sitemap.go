@@ -16,18 +16,18 @@ import (
 	mgo "gopkg.in/mgo.v2"
 )
 
-var themes string
-var locale string
+// var themes string
+// var locale string
 
-var addrs []string
-var database string
-var username string
-var password string
-var mechanism string
-var sites []string
-var commonwords string
-var sitemapsdir string
-var mainroute string
+// var addrs []string
+// var database string
+// var username string
+// var password string
+// var mechanism string
+// var sites []string
+// var commonwords string
+// var sitemapsdir string
+// var mainroute string
 var resultXML []byte
 
 func init() {

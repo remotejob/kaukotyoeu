@@ -31,7 +31,7 @@ func GetOneArticle(session mgo.Session, stitle string) domains.Article {
 
 	session.SetMode(mgo.Monotonic, true)
 
-	c := session.DB("jbs_generator").C("jbs_generator")
+	c := session.DB("blog").C("articles")
 
 	var result domains.Article
 
@@ -77,15 +77,3 @@ func GetAllUseful(session mgo.Session, themes string, locale string) []domains.G
 
 	return results
 }
-
-// func InsetArticle(session mgo.Session, article entryHandler.Article) {
-// 	session.SetMode(mgo.Monotonic, true)
-
-// 	c := session.DB("blog").C("articles")
-
-// 	err := c.Insert(article)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-
-// }
