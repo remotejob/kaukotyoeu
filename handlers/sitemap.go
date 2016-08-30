@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"bytes"
+	// "bytes"
 	"fmt"
 	"net/http"
 	"strings"
