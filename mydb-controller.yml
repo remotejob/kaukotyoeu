@@ -1,0 +1,30 @@
+# db-controller.yml
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  labels:
+    name: mymongo
+  name: mymongo-controller
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: mymongo
+    spec:
+      containers:
+      - image: gcr.io/jntlserv0/mymongodb:v5.0
+        name: mymongo
+        args: ["--auth"]
+        ports:
+        - name: mymongo
+          containerPort: 27017
+          hostPort: 27017
+        volumeMounts:
+            - name: mymongo-persistent-storage
+              mountPath: /data/db
+      volumes:
+        - name: mymongo-persistent-storage
+          gcePersistentDisk:
+            pdName: mymongo-disk
+            fsType: ext4

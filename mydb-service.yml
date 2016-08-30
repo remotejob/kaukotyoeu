@@ -1,0 +1,14 @@
+#db-service.yml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: mymongo
+  name: mymongo
+spec:
+  ports:
+    - port: 27017
+      targetPort: 27017
+  selector:
+    name: mymongo
+  type: LoadBalancer

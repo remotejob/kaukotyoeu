@@ -1,0 +1,34 @@
+[general]
+themes="realestate"
+locale="ru_RU"
+
+
+[dbmgo]
+addrs ="104.131.38.162"
+database ="admin"
+username ="admin"
+password ="admin1Rel"
+mechanism ="SCRAM-SHA-1"
+
+[dbmgoext]
+addrs ="104.131.38.162"
+database ="admin"
+username ="admin"
+password ="admin1Rel"
+mechanism ="SCRAM-SHA-1"
+
+[sites]
+site = "kvartira-tsentr.eu"
+site = "www.kvartira-tsentr.eu"
+
+[dirs]
+sitemapsdir = "/home/juno/neonworkspace/gowork/src/github.com/remotejob/apartment_ru_go/sitemaps"
+webrootdir =  "/tmp/static"
+
+[files]
+commonwords ="/home/juno/neonworkspace/gowork/src/github.com/remotejob/apartment_ru_go/commonwords.csv"
+
+[routes]
+mainroute ="apartments"
+
+
