@@ -2,7 +2,6 @@ package sitemaps_maker
 
 import (
 	"encoding/xml"
-	"fmt"
 	"log"
 	"time"
 
@@ -84,23 +83,15 @@ func Create(site string) []byte {
 				doc.Lastmod = sitemaplink.Updated.Format(time.RFC3339)
 				doc.Changefreq = "monthly"
 				docList.Pages = append(docList.Pages, doc)
-				fmt.Println(site, sitemaplink.Stitle)
+				// fmt.Println(site, sitemaplink.Stitle)
 			}
 
 		}
 
 		resultXML, err = xml.MarshalIndent(docList, "", "  ")
 		if err != nil {
-
-			//		golog.Crit(err.Error())
 			log.Println(err.Error())
 		}
-		// ioutil.WriteFile(sitemapsdir+"/sitemap_"+site+".xml", resultXML, 0644)
-		// if err != nil {
-
-		// 	//		golog.Crit(err.Error())
-		// 	log.Println(err.Error())
-		// }
 
 	}
 

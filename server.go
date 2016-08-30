@@ -1,6 +1,6 @@
 //go:generate  /home/juno/neonworkspace/gowork/bin/statik -src=./public
 
-package main // import "github.com/remotejob/godocker"
+package main // import "github.com/remotejob/server"
 
 import (
 	"log"

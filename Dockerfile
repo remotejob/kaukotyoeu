@@ -1,7 +1,7 @@
 FROM scratch
 EXPOSE 8080
 
-COPY godocker /
+COPY server /
 COPY config.gcfg /
 COPY assets/ /assets/
-ENTRYPOINT ["/godocker"]
+ENTRYPOINT ["/server"]

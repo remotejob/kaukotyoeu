@@ -1,11 +1,12 @@
 package handlers
 
 import (
+	"bytes"
+	"fmt"
 	"net/http"
 	"strings"
 
 	"github.com/remotejob/kaukotyoeu/sitemaps_maker"
-	//	"time"
 )
 
 func CheckServeSitemap(w http.ResponseWriter, r *http.Request) {
@@ -15,29 +16,15 @@ func CheckServeSitemap(w http.ResponseWriter, r *http.Request) {
 
 	if site == "localhost" {
 
-		site ="www.kaukotyo.eu"
+		site = "www.kaukotyo.eu"
 
 	}
 
 	sitemap := sitemaps_maker.Create(site)
 
-	
-	//	site :=r.URL.String()
-	// 	filestr := "sitemaps/sitemap_" + site + ".xml"
-	// //	fmt.Println("site", filestr)
-	// 	if _, err := os.Stat(filestr); os.IsNotExist(err) {
+	fmt.Println("CheckServeSitemap")
 
-	// 		http.NotFound(w, r)
-
-	// 	} else {
-	// 		f, _ := os.Open(filestr)
-	// 		buf := bytes.NewBuffer(nil)
-	// 		io.Copy(buf,f)
-
-	// 		w.Header().Add("Content-type", "application/xml")
-	// 		w.Write(buf.Bytes())
-
-	// 	}
+	fmt.Println(bytes.NewBuffer(sitemap).String())
 
 	w.Header().Add("Content-type", "application/xml")
 	w.Write(sitemap)
