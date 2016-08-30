@@ -24,7 +24,7 @@ func CheckServeSitemap(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println("CheckServeSitemap")
 
-	fmt.Println(bytes.NewBuffer(sitemap).String())
+	// fmt.Println(bytes.NewBuffer(sitemap).String())
 
 	w.Header().Add("Content-type", "application/xml")
 	w.Write(sitemap)

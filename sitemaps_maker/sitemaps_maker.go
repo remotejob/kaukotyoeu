@@ -1,7 +1,9 @@
 package sitemaps_maker
 
 import (
+	"bytes"
 	"encoding/xml"
+	"fmt"
 	"log"
 	"time"
 
@@ -92,6 +94,8 @@ func Create(site string) []byte {
 		if err != nil {
 			log.Println(err.Error())
 		}
+
+		fmt.Println(bytes.NewBuffer(resultXML).String())
 
 	}
 
