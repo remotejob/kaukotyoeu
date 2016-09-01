@@ -2,7 +2,7 @@ package handlers
 
 import (
 	// "bytes"
-	"bytes"
+
 	"encoding/xml"
 	"fmt"
 	"log"
@@ -108,7 +108,7 @@ func CheckServeSitemap(w http.ResponseWriter, r *http.Request) {
 		log.Println(err.Error())
 	}
 
-	fmt.Println(bytes.NewBuffer(resultXML).String())
+	// fmt.Println(bytes.NewBuffer(resultXML).String())
 
 	// fmt.Println(bytes.NewBuffer(sitemap).String())
 
