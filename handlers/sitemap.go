@@ -4,7 +4,6 @@ import (
 	// "bytes"
 
 	"encoding/xml"
-	"fmt"
 	"log"
 	"net/http"
 	"strings"
@@ -16,18 +15,6 @@ import (
 	mgo "gopkg.in/mgo.v2"
 )
 
-// var themes string
-// var locale string
-
-// var addrs []string
-// var database string
-// var username string
-// var password string
-// var mechanism string
-// var sites []string
-// var commonwords string
-// var sitemapsdir string
-// var mainroute string
 var resultXML []byte
 
 func init() {
@@ -84,7 +71,7 @@ func CheckServeSitemap(w http.ResponseWriter, r *http.Request) {
 
 	allsitemaplinks := dbhandler.GetAllSitemaplinks(*dbsession, site)
 
-	fmt.Println("CheckServeSitemap")
+	// fmt.Println("CheckServeSitemap")
 
 	docList := new(domains.Pages)
 	docList.XmlNS = "http://www.sitemaps.org/schemas/sitemap/0.9"

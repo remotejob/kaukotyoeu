@@ -30,6 +30,12 @@ var commonwords string
 var sitemapsdir string
 var mainroute string
 
+func checkReq(r *http.Request) {
+
+	log.Println(r.UserAgent())
+
+}
+
 func check(e error) {
 	if e != nil {
 		panic(e)
@@ -64,6 +70,8 @@ func init() {
 
 //CreateArticelePage createPage
 func CreateArticelePage(w http.ResponseWriter, r *http.Request) {
+
+	checkReq(r)
 
 	vars := mux.Vars(r)
 

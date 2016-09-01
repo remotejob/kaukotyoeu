@@ -3,6 +3,7 @@
 package main // import "github.com/remotejob/server"
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -30,35 +31,15 @@ var mechanismext string
 
 var sites []string
 
-// func init() {
+// func filterLog(out io.Writer) {
 
-// 	var cfg domains.ServerConfig
-// 	if err := gcfg.ReadFileInto(&cfg, "config.gcfg"); err != nil {
-// 		log.Fatalln(err.Error())
-
-// 	} else {
-
-// 		themes = cfg.General.Themes
-// 		locale = cfg.General.Locale
-
-// 		addrs = cfg.Dbmgo.Addrs
-// 		database = cfg.Dbmgo.Database
-// 		username = cfg.Dbmgo.Username
-// 		password = cfg.Dbmgo.Password
-// 		mechanism = cfg.Dbmgo.Mechanism
-
-// 		addrsext = cfg.Dbmgoext.Addrs
-// 		databaseext = cfg.Dbmgoext.Database
-// 		usernameext = cfg.Dbmgoext.Username
-// 		passwordext = cfg.Dbmgoext.Password
-// 		mechanismext = cfg.Dbmgoext.Mechanism
-
-// 		sites = cfg.Sites.Site
-
-// 	}
+// 	fmt.Println(out)
 
 // }
+
 func main() {
+
+	// finalHandler := http.HandlerFunc(final)
 
 	fs := http.FileServer(http.Dir("assets"))
 
@@ -68,8 +49,15 @@ func main() {
 	r.HandleFunc("/job/{locale}/{themes}/{mtitle}.html", handlers.CreateArticelePage)
 	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", fs))
 	r.HandleFunc("/", handlers.CreateIndexPage)
+	// loggedRouter := gorillahandlers.LoggingHandler(os.Stdout, r)
 	log.Println("Listening at port 8080")
+	// http.ListenAndServe(":8080", r)
 
 	log.Fatal(http.ListenAndServe(":8080", r))
+
+}
+func final(w http.ResponseWriter, r *http.Request) {
+
+	fmt.Println(r.Header)
 
 }
