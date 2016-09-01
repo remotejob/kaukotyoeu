@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"html/template"
 	"log"
 	"math/rand"
@@ -70,8 +69,6 @@ func CreateArticelePage(w http.ResponseWriter, r *http.Request) {
 
 	mtitle := vars["mtitle"]
 
-	fmt.Println(mtitle)
-
 	mongoDBDialInfo := &mgo.DialInfo{
 		Addrs:     addrs,
 		Timeout:   60 * time.Second,
@@ -88,12 +85,16 @@ func CreateArticelePage(w http.ResponseWriter, r *http.Request) {
 	}
 	defer dbsession.Close()
 	lp := path.Join("templates", "layout.html")
-	lphead := path.Join("templates", "header.html")
+	lphead := path.Join("templates", "header_common.html")
 
 	funcMap := template.FuncMap{
 		"marshal": func(a []byte) template.JS {
 
 			return template.JS(a)
+		},
+		"title": func(a domains.Article) string {
+
+			return a.Title
 		},
 	}
 	t, err := template.New("layout.html").Funcs(funcMap).ParseFiles(lp, lphead)
@@ -134,16 +135,29 @@ func CreateIndexPage(w http.ResponseWriter, r *http.Request) {
 	}
 	defer dbsession.Close()
 
-	lphead := path.Join("templates", "header_home.html")
 	lp := path.Join("templates", "home_page.html")
+	// lphead := path.Join("templates", "header_home.html")
+	headercommon := path.Join("templates", "header_common.html")
 
-	t, err := template.ParseFiles(lp, lphead)
+	funcMap := template.FuncMap{
+		"marshal": func(a []byte) template.JS {
+
+			return template.JS(a)
+		},
+		"title": func() string {
+
+			return "Index Page"
+		},
+	}
+
+	// t, err := template.ParseFiles(lp, lphead)
+	t, err := template.New("home_page.html").Funcs(funcMap).ParseFiles(lp, headercommon)
 	check(err)
 
-	allarticles := dbhandler.GetAllForStatic(*dbsession)
+	allarticles := dbhandler.GetAllForStatic(*dbsession, site)
 
 	var numberstoshuffle []int
-	for num, _ := range allarticles {
+	for num := range allarticles {
 
 		numberstoshuffle = append(numberstoshuffle, num)
 
@@ -152,14 +166,11 @@ func CreateIndexPage(w http.ResponseWriter, r *http.Request) {
 
 	shuffle.Ints(numberstoshuffle)
 
-	var articles_to_inject []domains.Articlefull
+	var atricleToInject []domains.Articlefull
+
 	for c, i := range numberstoshuffle {
 
-		if allarticles[i].Site == site {
-
-			articles_to_inject = append(articles_to_inject, allarticles[i])
-
-		}
+		atricleToInject = append(atricleToInject, allarticles[i])
 
 		if c > 100 {
 
@@ -168,7 +179,7 @@ func CreateIndexPage(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	err = t.Execute(w, articles_to_inject)
+	err = t.Execute(w, atricleToInject)
 	check(err)
 
 }

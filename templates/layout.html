@@ -1,29 +1,6 @@
-{{ template "header" .}}
+{{ template "header_common" .}}
 
 <script>
-var xmlhttp = new XMLHttpRequest();
-var url = {{.Title}}+".json";
-
-xmlhttp.onreadystatechange = function() {
-    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-        var myArr = JSON.parse(xmlhttp.responseText);
-        myFunction(myArr);
-    }
-};
-xmlhttp.open("GET", url, true);
-xmlhttp.send();
-
-function myFunction(arr) {
-
-	title_var = arr.Title
-	contents_var = arr.Contents
-	mcontents_var = arr.Mcontents
-	
-	document.getElementById("Title").innerHTML = title_var;
-	
-    document.getElementById("Contents").innerHTML = contents_var;
-    document.getElementById("Mcontents").innerHTML = mcontents_var;
-}
 
 function collapseHandler() {
 	
@@ -36,9 +13,7 @@ function collapseHandler() {
 <div  id='Mcontents'>{{.Mcontents}} </div>
 
 <div class="container">
-<!-- <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse" aria-expanded="false" aria-controls="collapse">
-  Show 
-</button> -->
+
 <button class="btn btn-primary" type="button" onclick="collapseHandler()">Show </button>
 
 <div class="collapse" id="collapse">

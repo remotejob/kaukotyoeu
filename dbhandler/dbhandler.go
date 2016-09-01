@@ -10,13 +10,13 @@ import (
 )
 
 //GetAllForStatic coments
-func GetAllForStatic(session mgo.Session) []domains.Articlefull {
+func GetAllForStatic(session mgo.Session, site string) []domains.Articlefull {
 
 	session.SetMode(mgo.Monotonic, true)
 
 	c := session.DB("blog").C("articles")
 	var results []domains.Articlefull
-	err := c.Find(nil).All(&results)
+	err := c.Find(bson.M{"site": site}).All(&results)
 	if err != nil {
 
 		log.Fatal(err)
