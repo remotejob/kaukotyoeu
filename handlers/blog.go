@@ -33,7 +33,7 @@ var mainroute string
 
 func checkReq(r *http.Request) {
 
-	if strings.Index(r.UserAgent(), "www.google") != -1 {
+	if strings.Index(r.Referer(), "www.google") != -1 {
 
 		now := time.Now()
 		log := r.Referer() + "," + r.RequestURI
