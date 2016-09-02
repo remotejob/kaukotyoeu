@@ -112,6 +112,8 @@ func CreateArticelePage(w http.ResponseWriter, r *http.Request) {
 			proc := ld.NewJsonLdProcessor()
 			options := ld.NewJsonLdOptions("")
 
+			image := map[string]interface{}{"@type": "ImageObject", "url": "http://mazurov.eu/img/mazurovopt.jpg", "height": "200px", "width": "300px"}
+
 			doc := map[string]interface{}{
 				"@context":  "http://schema.org/",
 				"@type":     "Person",
@@ -119,6 +121,7 @@ func CreateArticelePage(w http.ResponseWriter, r *http.Request) {
 				"jobTitle":  "Programmer",
 				"telephone": "+358 451 202 801",
 				"url":       "http://mazurov.eu",
+				"image":     image,
 			}
 
 			comp, err := proc.Compact(doc, nil, options)
