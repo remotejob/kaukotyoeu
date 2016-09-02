@@ -9,6 +9,21 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
+//InsertLogRecord InsertLogRecord
+func InsertLogRecord(session mgo.Session, record domains.LogRecord) {
+
+	session.SetMode(mgo.Monotonic, true)
+
+	c := session.DB("log").C("logrecords")
+
+	err := c.Insert(record)
+
+	if err != nil {
+		panic(err)
+	}
+
+}
+
 //GetAllForStatic coments
 func GetAllForStatic(session mgo.Session, site string) []domains.Articlefull {
 

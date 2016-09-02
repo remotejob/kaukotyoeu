@@ -12,6 +12,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/remotejob/kaukotyoeu/dbhandler"
 	"github.com/remotejob/kaukotyoeu/domains"
+	"github.com/remotejob/kaukotyoeu/handlers/insertlog"
 	shuffle "github.com/shogo82148/go-shuffle"
 	gcfg "gopkg.in/gcfg.v1"
 	mgo "gopkg.in/mgo.v2"
@@ -32,7 +33,15 @@ var mainroute string
 
 func checkReq(r *http.Request) {
 
-	log.Println(r.UserAgent())
+	if strings.Index(r.UserAgent(), "www.google") != -1 {
+
+		now := time.Now()
+		log := r.Referer() + "," + r.RequestURI
+		record := domains.LogRecord{Date: now,
+			Log: log}
+		go insertlog.InsertIntoDB(record)
+
+	}
 
 }
 

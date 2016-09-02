@@ -7,6 +7,11 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
+type LogRecord struct {
+	Date time.Time
+	Log  string
+}
+
 // Gphrase comment
 type Gphrase struct {
 	Phrase string `bson:"Phrase"`
