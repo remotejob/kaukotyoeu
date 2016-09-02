@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"html/template"
 	"log"
 	"math/rand"
@@ -10,6 +11,7 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/kazarena/json-gold/ld"
 	"github.com/remotejob/kaukotyoeu/dbhandler"
 	"github.com/remotejob/kaukotyoeu/domains"
 	"github.com/remotejob/kaukotyoeu/handlers/insertlog"
@@ -105,9 +107,29 @@ func CreateArticelePage(w http.ResponseWriter, r *http.Request) {
 	lphead := path.Join("templates", "header_common.html")
 
 	funcMap := template.FuncMap{
-		"marshal": func(a []byte) template.JS {
+		"marshal": func(a domains.Article) template.JS {
 
-			return template.JS(a)
+			proc := ld.NewJsonLdProcessor()
+			options := ld.NewJsonLdOptions("")
+
+			doc := map[string]interface{}{
+				"@context":  "http://schema.org/",
+				"@type":     "Person",
+				"name":      "Aleksander Mazurov",
+				"jobTitle":  "Programmer",
+				"telephone": "+358 451 202 801",
+				"url":       "http://mazurov.eu",
+			}
+
+			comp, err := proc.Compact(doc, nil, options)
+			if err != nil {
+				log.Println("Error when expanding JSON-LD document:", err)
+
+			}
+
+			b, _ := json.Marshal(comp)
+
+			return template.JS(b)
 		},
 		"title": func(a domains.Article) string {
 
@@ -153,7 +175,7 @@ func CreateIndexPage(w http.ResponseWriter, r *http.Request) {
 	defer dbsession.Close()
 
 	lp := path.Join("templates", "home_page.html")
-	// lphead := path.Join("templates", "header_home.html")
+
 	headercommon := path.Join("templates", "header_common.html")
 
 	funcMap := template.FuncMap{
@@ -167,7 +189,6 @@ func CreateIndexPage(w http.ResponseWriter, r *http.Request) {
 		},
 	}
 
-	// t, err := template.ParseFiles(lp, lphead)
 	t, err := template.New("home_page.html").Funcs(funcMap).ParseFiles(lp, headercommon)
 	check(err)
 
@@ -187,11 +208,9 @@ func CreateIndexPage(w http.ResponseWriter, r *http.Request) {
 
 	for c, i := range numberstoshuffle {
 
-		atricleToInject = append(atricleToInject, allarticles[i])
+		if c < 100 {
 
-		if c > 100 {
-
-			break
+			atricleToInject = append(atricleToInject, allarticles[i])
 		}
 
 	}
