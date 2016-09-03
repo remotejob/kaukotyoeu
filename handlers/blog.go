@@ -196,7 +196,7 @@ func CreateIndexPage(w http.ResponseWriter, r *http.Request) {
 				b := ldjsonhandler.Create(a)
 				return template.JS(b)
 			},
-			"title": func() string {
+			"title": func(a []domains.Articlefull) string {
 
 				return "Index Page"
 			},
