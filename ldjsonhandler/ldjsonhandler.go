@@ -24,7 +24,7 @@ func Create(articles []domains.Articlefull) []byte {
 
 		pagelink := "http://" + articles[0].Site + "/job/fi_FI/blogi/" + articles[0].Stitle + ".html"
 
-		publisher := map[string]interface{}{"@type": "Organization", "name": "Remote Job Finland OY", "logo": map[string]interface{}{"@type": "ImageObject", "url": "http://mazurov.eu/img/free_for_job.png", "height": "256px", "width": "256px"}}
+		publisher := map[string]interface{}{"@type": "Organization", "name": "Remote Job Finland OY", "logo": map[string]interface{}{"@type": "ImageObject", "url": "http://mazurov.eu/img/mazurovopt.jpg", "height": "200px", "width": "300px"}}
 		image := map[string]interface{}{"@type": "ImageObject", "url": "http://" + articles[0].Site + "/assets/img/free_for_job.png", "height": "256px", "width": "256px"}
 		mainEntityOfPage := map[string]interface{}{"@type": "WebPage", "@id": "http://" + articles[0].Site}
 
