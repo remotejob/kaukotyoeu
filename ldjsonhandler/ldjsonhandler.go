@@ -1,6 +1,7 @@
 package ldjsonhandler
 
 import (
+	"bytes"
 	"encoding/json"
 	"log"
 
@@ -27,11 +28,24 @@ func Create(articles []domains.Articlefull) []byte {
 		image := map[string]interface{}{"@type": "ImageObject", "url": "http://" + articles[0].Site + "/assets/img/free_for_job.png", "height": "256px", "width": "256px"}
 		mainEntityOfPage := map[string]interface{}{"@type": "WebPage", "@id": "http://" + articles[0].Site}
 
+		var headline string
+
+		runes := bytes.Runes([]byte(articles[0].Title))
+		if len(runes) > 110 {
+
+			headline = string(runes[:109]) + "."
+
+		} else {
+
+			headline = articles[0].Title + "."
+
+		}
+
 		doc = map[string]interface{}{
 			"@context":         "http://schema.org",
 			"@type":            "Article",
 			"author":           articles[0].Author,
-			"headline":         articles[0].Title,
+			"headline":         headline,
 			"publisher":        publisher,
 			"image":            image,
 			"datepublished":    createdstr,
