@@ -163,21 +163,6 @@ func CreateIndexPage(w http.ResponseWriter, r *http.Request) {
 
 	headercommon := path.Join("templates", "header_common.html")
 
-	funcMap := template.FuncMap{
-		"marshal": func(a []domains.Articlefull) template.JS {
-
-			b := ldjsonhandler.Create(a)
-			return template.JS(b)
-		},
-		"title": func() string {
-
-			return "Index Page"
-		},
-	}
-
-	t, err := template.New("home_page.html").Funcs(funcMap).ParseFiles(lp, headercommon)
-	check(err)
-
 	allarticles := dbhandler.GetAllForStatic(*dbsession, site)
 
 	var numberstoshuffle []int
@@ -201,7 +186,26 @@ func CreateIndexPage(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	err = t.Execute(w, atricleToInject)
-	check(err)
+	if len(atricleToInject) > 0 {
+
+		log.Println(len(atricleToInject))
+
+		funcMap := template.FuncMap{
+			"marshal": func(a []domains.Articlefull) template.JS {
+
+				b := ldjsonhandler.Create(a)
+				return template.JS(b)
+			},
+			"title": func() string {
+
+				return "Index Page"
+			},
+		}
+		t, err := template.New("home_page.html").Funcs(funcMap).ParseFiles(lp, headercommon)
+		check(err)
+
+		err = t.Execute(w, atricleToInject)
+		check(err)
+	}
 
 }
