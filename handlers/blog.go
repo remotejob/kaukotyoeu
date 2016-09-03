@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"encoding/json"
 	"html/template"
 	"log"
 	"math/rand"
@@ -11,10 +10,10 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
-	"github.com/kazarena/json-gold/ld"
 	"github.com/remotejob/kaukotyoeu/dbhandler"
 	"github.com/remotejob/kaukotyoeu/domains"
 	"github.com/remotejob/kaukotyoeu/handlers/insertlog"
+	"github.com/remotejob/kaukotyoeu/ldjsonhandler"
 	shuffle "github.com/shogo82148/go-shuffle"
 	gcfg "gopkg.in/gcfg.v1"
 	mgo "gopkg.in/mgo.v2"
@@ -107,34 +106,17 @@ func CreateArticelePage(w http.ResponseWriter, r *http.Request) {
 	lphead := path.Join("templates", "header_common.html")
 
 	funcMap := template.FuncMap{
-		"marshal": func(a domains.Article) template.JS {
+		"marshal": func(a domains.Articlefull) template.JS {
 
-			proc := ld.NewJsonLdProcessor()
-			options := ld.NewJsonLdOptions("")
+			var articles []domains.Articlefull
 
-			image := map[string]interface{}{"@type": "ImageObject", "url": "http://mazurov.eu/img/mazurovopt.jpg", "height": "200px", "width": "300px"}
+			articles = append(articles, a)
 
-			doc := map[string]interface{}{
-				"@context":  "http://schema.org/",
-				"@type":     "Person",
-				"name":      "Aleksander Mazurov",
-				"jobTitle":  "Programmer",
-				"telephone": "+358 451 202 801",
-				"url":       "http://mazurov.eu",
-				"image":     image,
-			}
-
-			comp, err := proc.Compact(doc, nil, options)
-			if err != nil {
-				log.Println("Error when expanding JSON-LD document:", err)
-
-			}
-
-			b, _ := json.Marshal(comp)
+			b := ldjsonhandler.Create(articles)
 
 			return template.JS(b)
 		},
-		"title": func(a domains.Article) string {
+		"title": func(a domains.Articlefull) string {
 
 			return a.Title
 		},
@@ -182,9 +164,10 @@ func CreateIndexPage(w http.ResponseWriter, r *http.Request) {
 	headercommon := path.Join("templates", "header_common.html")
 
 	funcMap := template.FuncMap{
-		"marshal": func(a []byte) template.JS {
+		"marshal": func(a []domains.Articlefull) template.JS {
 
-			return template.JS(a)
+			b := ldjsonhandler.Create(a)
+			return template.JS(b)
 		},
 		"title": func() string {
 
