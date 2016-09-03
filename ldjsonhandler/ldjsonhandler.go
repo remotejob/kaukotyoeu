@@ -11,7 +11,7 @@ import (
 //Create Create
 func Create(articles []domains.Articlefull) []byte {
 
-	log.Println(articles)
+	// log.Println(articles)
 	proc := ld.NewJsonLdProcessor()
 	options := ld.NewJsonLdOptions("")
 
