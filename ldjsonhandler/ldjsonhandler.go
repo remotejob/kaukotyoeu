@@ -54,7 +54,7 @@ func Create(articles []domains.Articlefull) []byte {
 			// "keywords":         articlefull.Tags,
 			"url": pagelink,
 			//		"description":         "We love to do stuff to help people and stuff",
-			"articleSection": "realestate",
+			"articleSection": "job",
 			"articleBody":    articles[0].Contents,
 		}
 	} else {
