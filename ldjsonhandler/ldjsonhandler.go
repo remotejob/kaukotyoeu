@@ -71,7 +71,7 @@ func Create(articles []domains.Articlefull, index bool) []byte {
 
 		var itemListElement []interface{}
 		for pos, article := range articles {
-			listItem := map[string]interface{}{"@type": "ListItem", "position": pos, "item": map[string]interface{}{"@id": "http://" + article.Stitle + ".html", "name": article.Title}}
+			listItem := map[string]interface{}{"@type": "ListItem", "position": pos, "item": map[string]interface{}{"@id": "http://" + article.Site + "/job/fi_FI/blog/" + article.Stitle + ".html", "name": article.Title}}
 			itemListElement = append(itemListElement, listItem)
 		}
 
