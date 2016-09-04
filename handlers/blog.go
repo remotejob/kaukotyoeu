@@ -112,7 +112,7 @@ func CreateArticelePage(w http.ResponseWriter, r *http.Request) {
 
 			articles = append(articles, a)
 
-			b := ldjsonhandler.Create(articles)
+			b := ldjsonhandler.Create(articles, false)
 
 			return template.JS(b)
 		},
@@ -162,6 +162,21 @@ func CreateIndexPage(w http.ResponseWriter, r *http.Request) {
 	lp := path.Join("templates", "home_page.html")
 
 	headercommon := path.Join("templates", "header_common.html")
+	funcMap := template.FuncMap{
+		"marshal": func(articles []domains.Articlefull) template.JS {
+
+			// log.Println("a", len(articles))
+			b := ldjsonhandler.Create(articles, true)
+			return template.JS(b)
+		},
+		"title": func(a []domains.Articlefull) string {
+
+			return "Index Page"
+		},
+	}
+
+	t, err := template.New("home_page.html").Funcs(funcMap).ParseFiles(lp, headercommon)
+	check(err)
 
 	allarticles := dbhandler.GetAllForStatic(*dbsession, site)
 
@@ -189,20 +204,6 @@ func CreateIndexPage(w http.ResponseWriter, r *http.Request) {
 	if len(atricleToInject) > 0 {
 
 		log.Println(len(atricleToInject))
-
-		funcMap := template.FuncMap{
-			"marshal": func(a []domains.Articlefull) template.JS {
-
-				b := ldjsonhandler.Create(a)
-				return template.JS(b)
-			},
-			"title": func(a []domains.Articlefull) string {
-
-				return "Index Page"
-			},
-		}
-		t, err := template.New("home_page.html").Funcs(funcMap).ParseFiles(lp, headercommon)
-		check(err)
 
 		err = t.Execute(w, atricleToInject)
 		check(err)

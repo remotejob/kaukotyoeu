@@ -10,15 +10,14 @@ import (
 )
 
 //Create Create
-func Create(articles []domains.Articlefull) []byte {
+func Create(articles []domains.Articlefull, index bool) []byte {
 
-	// log.Println(articles)
 	proc := ld.NewJsonLdProcessor()
 	options := ld.NewJsonLdOptions("")
 
 	var doc map[string]interface{}
 
-	if len(articles) > 0 {
+	if !index {
 		createdstr := articles[0].Created.Format("2006-01-02")
 		updatedstr := articles[0].Updated.Format("2006-01-02")
 
@@ -58,18 +57,32 @@ func Create(articles []domains.Articlefull) []byte {
 			"articleBody":    articles[0].Contents,
 		}
 	} else {
-		image := map[string]interface{}{"@type": "ImageObject", "url": "http://mazurov.eu/img/mazurovopt.jpg", "height": "200px", "width": "300px"}
+		// image := map[string]interface{}{"@type": "ImageObject", "url": "http://mazurov.eu/img/mazurovopt.jpg", "height": "200px", "width": "300px"}
+
+		// doc = map[string]interface{}{
+		// 	"@context":  "http://schema.org/",
+		// 	"@type":     "Person",
+		// 	"name":      "Aleksander Mazurov",
+		// 	"jobTitle":  "Programmer",
+		// 	"telephone": "+358 451 202 801",
+		// 	"url":       "http://mazurov.eu",
+		// 	"image":     image,
+		// }
+
+		var itemListElement []interface{}
+		for pos, article := range articles {
+			listItem := map[string]interface{}{"@type": "ListItem", "position": pos, "item": map[string]interface{}{"@id": "http://" + article.Stitle + ".html", "name": article.Title}}
+			itemListElement = append(itemListElement, listItem)
+		}
 
 		doc = map[string]interface{}{
-			"@context":  "http://schema.org/",
-			"@type":     "Person",
-			"name":      "Aleksander Mazurov",
-			"jobTitle":  "Programmer",
-			"telephone": "+358 451 202 801",
-			"url":       "http://mazurov.eu",
-			"image":     image,
+			"@context":        "http://schema.org/",
+			"@type":           "BreadcrumbList",
+			"itemListElement": itemListElement,
 		}
+
 	}
+
 	comp, err := proc.Compact(doc, nil, options)
 	if err != nil {
 		log.Println("Error when expanding JSON-LD document:", err)
