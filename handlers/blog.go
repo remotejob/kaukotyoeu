@@ -194,7 +194,7 @@ func CreateIndexPage(w http.ResponseWriter, r *http.Request) {
 
 	for c, i := range numberstoshuffle {
 
-		if c < 100 {
+		if c < 10 {
 
 			atricleToInject = append(atricleToInject, allarticles[i])
 		}

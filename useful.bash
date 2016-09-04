@@ -26,7 +26,7 @@ gcloud compute disks create --project "jntlserv0" --zone "europe-west1-c" --size
 
 
 
-docker run --rm -v "$(pwd):/src" -v /var/run/docker.sock:/var/run/docker.sock centurylink/golang-builder gcr.io/jntlserv0/godocker:v10
+docker run --rm -v "$(pwd):/src" -v /var/run/docker.sock:/var/run/docker.sock centurylink/golang-builder gcr.io/$PROJECT_ID/godocker:v10
 gcloud docker push gcr.io/$PROJECT_ID/godocker:v10
 
 

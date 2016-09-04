@@ -15,72 +15,61 @@ func Create(articles []domains.Articlefull, index bool) []byte {
 	proc := ld.NewJsonLdProcessor()
 	options := ld.NewJsonLdOptions("")
 
+	var pageType string
+	if index {
+
+		pageType = "Index Page"
+
+	} else {
+
+		pageType = "Selected Article"
+
+	}
+
 	var doc map[string]interface{}
 
-	if !index {
-		createdstr := articles[0].Created.Format("2006-01-02")
-		updatedstr := articles[0].Updated.Format("2006-01-02")
+	var itemListElement []interface{}
+	for pos, article := range articles {
 
-		pagelink := "http://" + articles[0].Site + "/job/fi_FI/blogi/" + articles[0].Stitle + ".html"
-
+		createdstr := article.Created.Format("2006-01-02")
+		updatedstr := article.Updated.Format("2006-01-02")
+		pagelink := "http://" + article.Site + "/job/fi_FI/blogi/" + article.Stitle + ".html"
 		publisher := map[string]interface{}{"@type": "Organization", "name": "Remote Job Finland OY", "logo": map[string]interface{}{"@type": "ImageObject", "url": "http://mazurov.eu/img/mazurovopt.jpg", "height": "200px", "width": "300px"}}
-		image := map[string]interface{}{"@type": "ImageObject", "url": "http://" + articles[0].Site + "/assets/img/free_for_job.png", "height": "256px", "width": "256px"}
-		mainEntityOfPage := map[string]interface{}{"@type": "WebPage", "@id": "http://" + articles[0].Site}
+		image := map[string]interface{}{"@type": "ImageObject", "url": "http://" + article.Site + "/assets/img/free_for_job.png", "height": "256px", "width": "256px"}
+		mainEntityOfPage := map[string]interface{}{"@type": "WebPage", "@id": "http://" + article.Site}
 
 		var headline string
 
-		runes := bytes.Runes([]byte(articles[0].Title))
-		if len(runes) > 110 {
+		runes := bytes.Runes([]byte(article.Title))
+		if len(runes) > 109 {
 
-			headline = string(runes[:109]) + "."
+			headline = string(runes[:108]) + "."
 
 		} else {
 
-			headline = articles[0].Title + "."
+			headline = article.Title + "."
 
 		}
 
-		doc = map[string]interface{}{
-			"@context":         "http://schema.org",
-			"@type":            "Article",
-			"author":           articles[0].Author,
+		listItem := map[string]interface{}{"@type": "ListItem", "position": pos, "item": map[string]interface{}{"@type": "Article", "author": article.Author,
 			"headline":         headline,
 			"publisher":        publisher,
 			"image":            image,
 			"datepublished":    createdstr,
 			"datemodified":     updatedstr,
 			"mainEntityOfPage": mainEntityOfPage,
-			// "keywords":         articlefull.Tags,
-			"url": pagelink,
-			//		"description":         "We love to do stuff to help people and stuff",
-			"articleSection": "job",
-			"articleBody":    articles[0].Contents,
-		}
-	} else {
-		// image := map[string]interface{}{"@type": "ImageObject", "url": "http://mazurov.eu/img/mazurovopt.jpg", "height": "200px", "width": "300px"}
+			"url":              pagelink,
+			"articleSection":   "job",
+			"articleBody":      article.Contents}, "name": headline}
 
-		// doc = map[string]interface{}{
-		// 	"@context":  "http://schema.org/",
-		// 	"@type":     "Person",
-		// 	"name":      "Aleksander Mazurov",
-		// 	"jobTitle":  "Programmer",
-		// 	"telephone": "+358 451 202 801",
-		// 	"url":       "http://mazurov.eu",
-		// 	"image":     image,
-		// }
+		itemListElement = append(itemListElement, listItem)
+	}
 
-		var itemListElement []interface{}
-		for pos, article := range articles {
-			listItem := map[string]interface{}{"@type": "ListItem", "position": pos, "item": map[string]interface{}{"@id": "http://" + article.Site + "/job/fi_FI/blog/" + article.Stitle + ".html", "name": article.Title}}
-			itemListElement = append(itemListElement, listItem)
-		}
-
-		doc = map[string]interface{}{
-			"@context":        "http://schema.org/",
-			"@type":           "BreadcrumbList",
-			"itemListElement": itemListElement,
-		}
-
+	doc = map[string]interface{}{
+		"@context":        "http://schema.org",
+		"@type":           "BreadcrumbList",
+		"itemListElement": itemListElement,
+		"name":            pageType,
 	}
 
 	comp, err := proc.Compact(doc, nil, options)
