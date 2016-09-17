@@ -10,21 +10,21 @@ import (
 )
 
 //Create Create
-func Create(articles []domains.Articlefull, index bool) []byte {
+func Create(articles []domains.Articlefull, pageType string) []byte {
 
 	proc := ld.NewJsonLdProcessor()
 	options := ld.NewJsonLdOptions("")
 
-	var pageType string
-	if index {
+	// var pageType string
+	// if index {
 
-		pageType = "Index Page"
+	// 	pageType = "Index Page"
 
-	} else {
+	// } else {
 
-		pageType = "Selected Article"
+	// 	pageType = "Selected Article"
 
-	}
+	// }
 
 	var doc map[string]interface{}
 

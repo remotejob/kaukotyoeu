@@ -112,7 +112,7 @@ func CreateArticelePage(w http.ResponseWriter, r *http.Request) {
 
 			articles = append(articles, a)
 
-			b := ldjsonhandler.Create(articles, false)
+			b := ldjsonhandler.Create(articles, "Selected Article")
 
 			return template.JS(b)
 		},
@@ -166,7 +166,7 @@ func CreateIndexPage(w http.ResponseWriter, r *http.Request) {
 		"marshal": func(articles []domains.Articlefull) template.JS {
 
 			// log.Println("a", len(articles))
-			b := ldjsonhandler.Create(articles, true)
+			b := ldjsonhandler.Create(articles, "Index Page")
 			return template.JS(b)
 		},
 		"title": func(a []domains.Articlefull) string {

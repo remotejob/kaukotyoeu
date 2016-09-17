@@ -26,8 +26,8 @@ gcloud compute disks create --project "jntlserv0" --zone "europe-west1-c" --size
 
 
 
-docker run --rm -v "$(pwd):/src" -v /var/run/docker.sock:/var/run/docker.sock centurylink/golang-builder gcr.io/$PROJECT_ID/godocker:v10
-gcloud docker push gcr.io/$PROJECT_ID/godocker:v10
+docker run --rm -v "$(pwd):/src" -v /var/run/docker.sock:/var/run/docker.sock centurylink/golang-builder gcr.io/jntlserv0/godocker:v10
+gcloud docker push gcr.io/jntlserv0/godocker:v10
 
 
 kubectl create -f godeploiment.yaml
@@ -58,3 +58,18 @@ gsutil ls
 gsutil rm -r gs://artifacts.<$PROJECT_ID>.appspot.com/
 
 gcloud compute firewall-rules list
+
+
+
+
+CLEAN UP
+
+docker rm $(docker ps -a -q)
+
+docker rmi $(docker images -q)
+
+docker rmi -f $(docker images -q)
+
+#docker rm -f $(docker ps -a -q) ??
+
+docker exec -it trusting_agnesi bash
