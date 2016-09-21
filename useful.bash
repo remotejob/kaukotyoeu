@@ -32,7 +32,7 @@ gcloud docker push gcr.io/jntlserv0/godocker:v10
 
 kubectl create -f godeploiment.yaml
 
-kubectl set image deployment/godocker godocker=gcr.io/$PROJECT_ID/godocker:v10
+kubectl set image deployment/godocker godocker=gcr.io/jntlserv0/godocker:v10
 
 
 docker run -d --link mongo:mongo my_container

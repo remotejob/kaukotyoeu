@@ -1,6 +1,6 @@
 //go:generate  /home/juno/neonworkspace/gowork/bin/statik -src=./public
 
-package main // import "github.com/remotejob/server"
+package main // import "github.com/remotejob/kaukotyoeu"
 
 import (
 	"fmt"
@@ -31,11 +31,6 @@ var mechanismext string
 
 var sites []string
 
-// func filterLog(out io.Writer) {
-
-// 	fmt.Println(out)
-
-// }
 
 func main() {
 
