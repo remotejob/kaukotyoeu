@@ -16,15 +16,11 @@ by command COPY in Dockerfile
 * We are need only one line in code to serve all assets contents r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", fs))
 * to make some visual effects used small JavaScript fragment in templates files (home_page.html, layout.html)
 * credential taken from config.gcfg but better use [kubernetes security](http://kubernetes.io/docs/user-guide/security-context/)
-
-
 ## Second element standardt mongodb image
 * to make it more reliable and powerful used kubernetes controller mydb-controller.yml
 increase "replicas: 1" from 1 to more.
 * args: ["--auth"] line include authentication for mongodb so after it possible access from outside. 
 * file mydb-service.yml exspose DB for work.
-
-
 ## Start UP project
 * create Standard persistent disk in Google Cloud Platform (for DBase) name it "mymongo-disk"
 * modify mydb-controller.yml first without args: ["--auth"] create  authentication for mongodb after restart controller
@@ -33,6 +29,5 @@ increase "replicas: 1" from 1 to more.
 * kubectl create -f mydb-service.yml
 * modify Makefile
 * last command "make"
-
 ## to fill contents take a look other project
 * [https://github.com/remotejob/kaukotyoeu_utils](https://github.com/remotejob/kaukotyoeu_utils)
