@@ -2,7 +2,9 @@
   "language": "en",
   "ignoreWordsList": [
     "golang",
-    "Nginx"
+    "Nginx",
+    "Dockerfile",
+    "docker"
   ],
   "mistakeTypeToStatus": {
     "Passive voice": "Hint",

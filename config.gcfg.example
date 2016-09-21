@@ -7,14 +7,14 @@ locale="ru_RU"
 addrs ="104.131.38.162"
 database ="admin"
 username ="admin"
-password ="admin1Rel"
+password ="*****"
 mechanism ="SCRAM-SHA-1"
 
 [dbmgoext]
 addrs ="104.131.38.162"
 database ="admin"
 username ="admin"
-password ="admin1Rel"
+password ="******"
 mechanism ="SCRAM-SHA-1"
 
 [sites]
