@@ -7,6 +7,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
+//LogRecord substitude Nginx log capasity
 type LogRecord struct {
 	Date time.Time
 	Log  string
@@ -18,6 +19,7 @@ type Gphrase struct {
 	Rating int    `bson:"Rating"`
 }
 
+//Articlefull complite entity from DB
 type Articlefull struct {
 	ID     bson.ObjectId `bson:"_id,omitempty"`
 	Title  string
@@ -31,6 +33,7 @@ type Articlefull struct {
 	Updated   time.Time
 }
 
+//Articletotempalte limitede type used for templates
 type Articletotempalte struct {
 	Title  string
 	Stitle string
@@ -43,6 +46,7 @@ type Articletotempalte struct {
 	Jsonld    []byte
 }
 
+//Article shot Articel type
 type Article struct {
 	Title string
 	// Tags      string
@@ -51,12 +55,14 @@ type Article struct {
 	Author    string
 }
 
+//Sitemap_from_db only info for Sitemap format
 type Sitemap_from_db struct {
 	Stitle  string
 	Site    string
 	Updated time.Time
 }
 
+//ServerConfig config struc for site
 type ServerConfig struct {
 	General struct {
 		Themes string
@@ -100,6 +106,7 @@ type JobOffer struct {
 	Description string
 }
 
+//SitemapObj obj for sitemap
 type SitemapObj struct {
 	Changefreq    string
 	Hoursduration float64
@@ -136,6 +143,7 @@ type SitemapObj struct {
 //	Updated_at time.Time
 //}
 
+//Pages struct keep sitemap obj
 type Pages struct {
 	//	Version string   `xml:"version,attr"`
 	XMLName xml.Name `xml:"urlset"`
@@ -145,6 +153,7 @@ type Pages struct {
 	Pages []*Page `xml:"url"`
 }
 
+//Page sitemap Page
 type Page struct {
 	XMLName    xml.Name `xml:"url"`
 	Loc        string   `xml:"loc"`
@@ -156,24 +165,6 @@ type Page struct {
 	//	Keywords   string   `xml:"news:news>news:keywords"`
 	//	Image      string   `xml:"image:image>image:loc"`
 }
-
-// type Config struct {
-// 	Maintitle string
-// 	Subtitle  string
-// 	Cv        []struct {
-// 		Name string
-// 		Path string
-// 		Img  string
-// 		Item []struct {
-// 			Title    string
-// 			Rank     int
-// 			Duration int
-// 			Link     string
-// 			Extra    string
-// 			Img      string
-// 		}
-// 	}
-// }
 
 type Job struct {
 	Maintitle string

@@ -1,6 +1,7 @@
-//go:generate  /home/juno/neonworkspace/gowork/bin/statik -src=./public
-
-package main // import "github.com/remotejob/kaukotyoeu"
+//package Simple go web server to serve assets files
+//as well for Resful service
+//project use for dooçker containers
+package main
 
 import (
 	"fmt"
@@ -30,7 +31,6 @@ var passwordext string
 var mechanismext string
 
 var sites []string
-
 
 func main() {
 
