@@ -1,4 +1,4 @@
-//package Simple go web server to serve assets files
+//Simple go web server to serve assets files
 //as well for Resful service
 //project use for dooçker containers
 package main

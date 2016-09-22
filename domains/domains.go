@@ -1,3 +1,4 @@
+//Package domains used in project
 package domains
 
 import (
@@ -7,7 +8,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-//LogRecord substitude Nginx log capasity
+//LogRecord substitude Nginx log capacity
 type LogRecord struct {
 	Date time.Time
 	Log  string

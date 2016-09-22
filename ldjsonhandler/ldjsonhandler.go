@@ -1,3 +1,4 @@
+//Package ldjsonhandler for ld-Json
 package ldjsonhandler
 
 import (
@@ -9,22 +10,11 @@ import (
 	"github.com/remotejob/kaukotyoeu/domains"
 )
 
-//Create Create
+//Create ld-Json comments on web page
 func Create(articles []domains.Articlefull, pageType string) []byte {
 
 	proc := ld.NewJsonLdProcessor()
 	options := ld.NewJsonLdOptions("")
-
-	// var pageType string
-	// if index {
-
-	// 	pageType = "Index Page"
-
-	// } else {
-
-	// 	pageType = "Selected Article"
-
-	// }
 
 	var doc map[string]interface{}
 
