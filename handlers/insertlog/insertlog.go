@@ -1,3 +1,4 @@
+//Package insertlog insert log into DB
 package insertlog
 
 import (
@@ -49,7 +50,7 @@ func init() {
 
 }
 
-//InsertIntoDB InsertIntoDB
+//InsertIntoDB Insert Log Into DB
 func InsertIntoDB(record domains.LogRecord) {
 	mongoDBDialInfo := &mgo.DialInfo{
 		Addrs:     addrs,
