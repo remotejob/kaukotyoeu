@@ -4,6 +4,8 @@
 
 Package dbhandler ----> different DB functions
 
+func used as well in https://github.com/remotejob/kaukotyoeu_utils
+
 ### List
 
 ## Usage

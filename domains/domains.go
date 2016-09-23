@@ -1,4 +1,4 @@
-//Package domains used in project
+//Package domains struct used in project
 package domains
 
 import (
