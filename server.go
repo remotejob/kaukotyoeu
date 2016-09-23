@@ -13,9 +13,8 @@
 //
 // * static contents as well as templates (assets,templates dirs)  incorporated in docker container by command COPY in Dockerfile
 //
-// * COPY assets/ /assets/
-//
-// * COPY templates /templates/
+//  COPY assets/ /assets/
+//  COPY templates /templates/
 //
 // * We are need only one line in code to serve all assets contents r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", fs))
 //
@@ -32,7 +31,7 @@
 //
 // * file mydb-service.yml expose DB for work.
 //
-// ## Start UP project
+//Start UP project
 //
 // * create Standard persistent disk in Google Cloud Platform (for DBase) name it "mymongo-disk"
 //
