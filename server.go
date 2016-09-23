@@ -19,7 +19,8 @@
 //  COPY assets/ /assets/
 //  COPY templates /templates/
 //
-// * We are need only one line in code to serve all assets contents r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", fs))
+// * We are need only one line in code to serve all assets contents
+//  r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", fs))
 //
 // * to make some visual effects used small JavaScript fragment in templates files (home_page.html, layout.html)
 //
