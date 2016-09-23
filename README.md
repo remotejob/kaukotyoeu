@@ -1,10 +1,8 @@
 complite doc [![GoDoc](https://godoc.org/github.com/remotejob/kaukotyoeu?status.svg)](https://godoc.org/github.com/remotejob/kaukotyoeu)
-complite doc https://godoc.org/github.com/remotejob/kaukotyoeu
+ https://godoc.org/github.com/remotejob/kaukotyoeu
 # kaukotyoeu
 --
 Kauko Työ
-
-complite doc https://godoc.org/github.com/remotejob/kaukotyoeu
 
 
 Project demonstrate real application installed on Google Container Engine
