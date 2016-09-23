@@ -7,7 +7,7 @@ Kauko Työ
 
 Project demonstrate real application installed on Google Container Engine
 
-* Working link [kaukotyo.eu](http://kaukotyo.eu/)
+* Working link http://kaukotyo.eu/
 
 * Main difference from previous project
 https://github.com/remotejob/clusters_export/tree/master/docker-kaukotyo in use
@@ -28,8 +28,8 @@ r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", fs))
 * to make some visual effects used small JavaScript fragment in templates files
 (home_page.html, layout.html)
 
-* credential taken from config.gcfg but better use [kubernetes
-security](http://kubernetes.io/docs/user-guide/security-context/)
+* credential taken from config.gcfg but better use
+http://kubernetes.io/docs/user-guide/security-context/
 
 
 Second element Standard mongodb image
@@ -63,4 +63,4 @@ authentication for mongodb after restart controller
 
 To fill contents take a look at other project
 
-[https://github.com/remotejob/kaukotyoeu_utils](https://github.com/remotejob/kaukotyoeu_utils)
+https://github.com/remotejob/kaukotyoeu_utils
