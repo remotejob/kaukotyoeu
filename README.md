@@ -1,3 +1,5 @@
+complite doc [![GoDoc](https://godoc.org/github.com/remotejob/kaukotyoeu?status.svg)](https://godoc.org/github.com/remotejob/kaukotyoeu)
+complite doc https://godoc.org/github.com/remotejob/kaukotyoeu
 # kaukotyoeu
 --
 Kauko Työ

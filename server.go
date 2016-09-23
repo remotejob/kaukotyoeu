@@ -1,6 +1,5 @@
 //Kauko Työ
 //
-// complite doc https://godoc.org/github.com/remotejob/kaukotyoeu
 //
 //Project demonstrate real application installed on Google Container Engine
 //
