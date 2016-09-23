@@ -6,7 +6,10 @@
 //
 // * Working link http://kaukotyo.eu/
 //
-// * Main difference from previous project https://github.com/remotejob/clusters_export/tree/master/docker-kaukotyo
+// * Main difference from previous project
+//
+//https://github.com/remotejob/clusters_export/tree/master/docker-kaukotyo
+//
 // in use golang web server instead of Nginx.
 //
 //First component it's server.go (golang web server) file
