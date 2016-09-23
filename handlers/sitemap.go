@@ -42,6 +42,8 @@ func init() {
 	}
 
 }
+
+//CheckServeSitemap create dinamic sitemap.xml file
 func CheckServeSitemap(w http.ResponseWriter, r *http.Request) {
 
 	sitefull := r.Host
@@ -94,10 +96,6 @@ func CheckServeSitemap(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err.Error())
 	}
-
-	// fmt.Println(bytes.NewBuffer(resultXML).String())
-
-	// fmt.Println(bytes.NewBuffer(sitemap).String())
 
 	w.Header().Add("Content-type", "application/xml")
 	w.Write(resultXML)

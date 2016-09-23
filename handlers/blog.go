@@ -1,3 +1,4 @@
+//Package handlers used for web server routing
 package handlers
 
 import (

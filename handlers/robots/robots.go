@@ -1,3 +1,4 @@
+//Package robots dinamic robots.txt creation
 package robots
 
 import (
