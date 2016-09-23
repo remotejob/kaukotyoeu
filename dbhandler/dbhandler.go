@@ -1,3 +1,13 @@
+// Package dbhandler different DB functions
+//
+// List
+//
+// In the files of a library package, you can attach a comment to the package
+// name, which will be shown in the overview for that package's documentation.
+// Just like for command documentation, the convention is to use a file called
+// doc.go for your package documentation, though it is not necessary.  If you
+// have comments on the package name in multiple files, they'll be concatenated,
+// but generally it's best to just have comments in one file.
 package dbhandler
 
 import (
@@ -9,7 +19,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-//InsertLogRecord InsertLogRecord
+//InsertLogRecord InsertLogRecord into database
 func InsertLogRecord(session mgo.Session, record domains.LogRecord) {
 
 	session.SetMode(mgo.Monotonic, true)
@@ -41,7 +51,7 @@ func GetAllForStatic(session mgo.Session, site string) []domains.Articlefull {
 
 }
 
-//GetOneArticle
+//GetOneArticle get one artice by mtitle
 func GetOneArticle(session mgo.Session, stitle string) domains.Articlefull {
 
 	session.SetMode(mgo.Monotonic, true)
@@ -61,6 +71,7 @@ func GetOneArticle(session mgo.Session, stitle string) domains.Articlefull {
 
 }
 
+//GetAllSitemaplinks get all articles for sitemap.xml
 func GetAllSitemaplinks(session mgo.Session, site string) []domains.Sitemap_from_db {
 
 	session.SetMode(mgo.Monotonic, true)
@@ -76,6 +87,7 @@ func GetAllSitemaplinks(session mgo.Session, site string) []domains.Sitemap_from
 	return results
 }
 
+//GetAllUseful probably not used
 func GetAllUseful(session mgo.Session, themes string, locale string) []domains.Gphrase {
 
 	session.SetMode(mgo.Monotonic, true)
