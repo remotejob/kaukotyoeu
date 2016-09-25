@@ -10,7 +10,7 @@ import (
 	"github.com/remotejob/kaukotyoeu/domains"
 )
 
-//Create ld-Json comments on web page
+//Create ld-json comments on web page
 func Create(articles []domains.Articlefull, pgType string) []byte {
 
 	proc := ld.NewJsonLdProcessor()

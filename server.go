@@ -57,10 +57,10 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	// _ "github.com/remotejob/godocker/statik"
 
-	"github.com/remotejob/kaukotyoeu/handlers"
+	"github.com/remotejob/kaukotyoeu/handlers/blog"
 	"github.com/remotejob/kaukotyoeu/handlers/robots"
+	"github.com/remotejob/kaukotyoeu/handlers/sitemap"
 )
 
 // var themes string
@@ -86,12 +86,12 @@ func main() {
 
 	r := mux.NewRouter()
 	r.HandleFunc("/robots.txt", robots.Generate)
-	r.HandleFunc("/sitemap.xml", handlers.CheckServeSitemap)
-	r.HandleFunc("/job/{locale}/{themes}/{mtitle}.html", handlers.CreateArticelePage)
+	r.HandleFunc("/sitemap.xml", sitemap.CheckServeSitemap)
+	r.HandleFunc("/job/{locale}/{themes}/{mtitle}.html", blog.CreateArticelePage)
 	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", fs))
-	r.HandleFunc("/", handlers.CreateIndexPage)
+	r.HandleFunc("/", blog.CreateIndexPage)
 
-	log.Println("Listening at port 8080")
+	log.Println("Listening at port 8080!!")
 
 	log.Fatal(http.ListenAndServe(":8080", r))
 
