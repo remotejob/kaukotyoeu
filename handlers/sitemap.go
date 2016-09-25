@@ -1,8 +1,6 @@
 package handlers
 
 import (
-	// "bytes"
-
 	"encoding/xml"
 	"log"
 	"net/http"
@@ -11,37 +9,36 @@ import (
 
 	"github.com/remotejob/kaukotyoeu/dbhandler"
 	"github.com/remotejob/kaukotyoeu/domains"
-	gcfg "gopkg.in/gcfg.v1"
 	mgo "gopkg.in/mgo.v2"
 )
 
 var resultXML []byte
 
-func init() {
+// func init() {
 
-	var cfg domains.ServerConfig
-	if err := gcfg.ReadFileInto(&cfg, "config.gcfg"); err != nil {
-		log.Fatalln(err.Error())
+// 	var cfg domains.ServerConfig
+// 	if err := gcfg.ReadFileInto(&cfg, "config.gcfg"); err != nil {
+// 		log.Fatalln(err.Error())
 
-	} else {
+// 	} else {
 
-		themes = cfg.General.Themes
-		locale = cfg.General.Locale
+// 		themes = cfg.General.Themes
+// 		locale = cfg.General.Locale
 
-		addrs = cfg.Dbmgo.Addrs
-		database = cfg.Dbmgo.Database
-		username = cfg.Dbmgo.Username
-		password = cfg.Dbmgo.Password
-		mechanism = cfg.Dbmgo.Mechanism
+// 		addrs = cfg.Dbmgo.Addrs
+// 		database = cfg.Dbmgo.Database
+// 		username = cfg.Dbmgo.Username
+// 		password = cfg.Dbmgo.Password
+// 		mechanism = cfg.Dbmgo.Mechanism
 
-		sites = cfg.Sites.Site
-		commonwords = cfg.Files.Commonwords
-		sitemapsdir = cfg.Dirs.Sitemapsdir
-		mainroute = cfg.Routes.Mainroute
+// 		sites = cfg.Sites.Site
+// 		commonwords = cfg.Files.Commonwords
+// 		sitemapsdir = cfg.Dirs.Sitemapsdir
+// 		mainroute = cfg.Routes.Mainroute
 
-	}
+// 	}
 
-}
+// }
 
 //CheckServeSitemap create dinamic sitemap.xml file
 func CheckServeSitemap(w http.ResponseWriter, r *http.Request) {
@@ -73,8 +70,6 @@ func CheckServeSitemap(w http.ResponseWriter, r *http.Request) {
 
 	allsitemaplinks := dbhandler.GetAllSitemaplinks(*dbsession, site)
 
-	// fmt.Println("CheckServeSitemap")
-
 	docList := new(domains.Pages)
 	docList.XmlNS = "http://www.sitemaps.org/schemas/sitemap/0.9"
 
@@ -98,6 +93,9 @@ func CheckServeSitemap(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Add("Content-type", "application/xml")
-	w.Write(resultXML)
+	_, err = w.Write(resultXML)
+	if err != nil {
+		log.Println(err.Error())
+	}
 
 }

@@ -35,7 +35,7 @@ var mainroute string
 
 func checkReq(r *http.Request) {
 
-	if strings.Index(r.Referer(), "www.google") != -1 {
+	if strings.Contains(r.Referer(), "www.google") {
 
 		now := time.Now()
 		log := r.Referer() + "," + r.RequestURI
@@ -132,7 +132,7 @@ func CreateArticelePage(w http.ResponseWriter, r *http.Request) {
 
 }
 
-//CreateIndexPage create Index
+//CreateIndexPage create Index Page
 func CreateIndexPage(w http.ResponseWriter, r *http.Request) {
 
 	sitefull := r.Host
@@ -165,8 +165,6 @@ func CreateIndexPage(w http.ResponseWriter, r *http.Request) {
 	headercommon := path.Join("templates", "header_common.html")
 	funcMap := template.FuncMap{
 		"marshal": func(articles []domains.Articlefull) template.JS {
-
-			// log.Println("a", len(articles))
 			b := ldjsonhandler.Create(articles, "Index Page")
 			return template.JS(b)
 		},

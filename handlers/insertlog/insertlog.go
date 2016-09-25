@@ -50,7 +50,7 @@ func init() {
 
 }
 
-//InsertIntoDB Insert Log Into DB
+//InsertIntoDB Insert Log Into mongoDB
 func InsertIntoDB(record domains.LogRecord) {
 	mongoDBDialInfo := &mgo.DialInfo{
 		Addrs:     addrs,

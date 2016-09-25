@@ -11,7 +11,7 @@ import (
 )
 
 //Create ld-Json comments on web page
-func Create(articles []domains.Articlefull, pageType string) []byte {
+func Create(articles []domains.Articlefull, pgType string) []byte {
 
 	proc := ld.NewJsonLdProcessor()
 	options := ld.NewJsonLdOptions("")
@@ -59,7 +59,7 @@ func Create(articles []domains.Articlefull, pageType string) []byte {
 		"@context":        "http://schema.org",
 		"@type":           "BreadcrumbList",
 		"itemListElement": itemListElement,
-		"name":            pageType,
+		"name":            pgType,
 	}
 
 	comp, err := proc.Compact(doc, nil, options)
@@ -68,7 +68,11 @@ func Create(articles []domains.Articlefull, pageType string) []byte {
 
 	}
 
-	b, _ := json.Marshal(comp)
+	b, err := json.Marshal(comp)
+	if err != nil {
+		log.Println(err.Error())
+
+	}
 
 	return b
 }

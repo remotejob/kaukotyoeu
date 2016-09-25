@@ -8,7 +8,6 @@
 package dbhandler
 
 import (
-	//	"fmt"
 	"log"
 
 	"github.com/remotejob/kaukotyoeu/domains"
