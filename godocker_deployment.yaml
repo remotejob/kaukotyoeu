@@ -1,0 +1,37 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: godocker
+spec:
+  template:
+    metadata:
+      labels:
+        run: godocker
+    spec:
+      containers:
+      - name: godocker
+        image:  gcr.io/jntlserv0/godocker:0.4
+        env:
+        - name: THEMES
+          value: job
+        - name: LOCALE
+          value: fi_FI
+        - name: DBADMIN
+          value: admin
+        - name: ADDRS
+          value: mymongo-controller
+        - name: MAINROUTE
+          value: blogi                
+        - name: SECRET_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mysecret
+              key: username
+        - name: SECRET_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysecret
+              key: password
+        ports:
+        - containerPort: 8080
+

@@ -13,9 +13,9 @@ import (
 	"github.com/remotejob/kaukotyoeu/dbhandler"
 	"github.com/remotejob/kaukotyoeu/domains"
 	"github.com/remotejob/kaukotyoeu/handlers/insertlog"
+	"github.com/remotejob/kaukotyoeu/initfunc"
 	"github.com/remotejob/kaukotyoeu/ldjsonhandler"
 	shuffle "github.com/shogo82148/go-shuffle"
-	gcfg "gopkg.in/gcfg.v1"
 	mgo "gopkg.in/mgo.v2"
 )
 
@@ -27,10 +27,6 @@ var database string
 var username string
 var password string
 var mechanism string
-var sites []string
-var commonwords string
-var sitemapsdir string
-var mainroute string
 
 func checkReq(r *http.Request) {
 
@@ -53,29 +49,41 @@ func check(e error) {
 }
 
 func init() {
+	themes, locale, addrs, database, username, password, mechanism, _ = initfunc.GetPar()
 
-	var cfg domains.ServerConfig
-	if err := gcfg.ReadFileInto(&cfg, "config.gcfg"); err != nil {
-		log.Fatalln(err.Error())
+	// if os.Getenv("SECRET_USERNAME") != "" {
 
-	} else {
+	// 	username = os.Getenv("SECRET_USERNAME")
+	// 	password = os.Getenv("SECRET_PASSWORD")
+	// 	themes = os.Getenv("THEMES")
+	// 	locale = os.Getenv("LOCALE")
+	// 	database = os.Getenv("DBADMIN")
+	// 	mechanism = "SCRAM-SHA-1"
+	// 	addrs = []string{os.Getenv("ADDRS")}
+	// 	log.Println("mongodbpass", password, "database", database)
+	// } else {
+	// 	var cfg domains.ServerConfig
+	// 	if err := gcfg.ReadFileInto(&cfg, "config.gcfg"); err != nil {
+	// 		log.Fatalln(err.Error())
 
-		themes = cfg.General.Themes
-		locale = cfg.General.Locale
+	// 	} else {
 
-		addrs = cfg.Dbmgo.Addrs
-		database = cfg.Dbmgo.Database
-		username = cfg.Dbmgo.Username
-		password = cfg.Dbmgo.Password
-		mechanism = cfg.Dbmgo.Mechanism
+	// 		themes = cfg.General.Themes
+	// 		locale = cfg.General.Locale
 
-		sites = cfg.Sites.Site
-		commonwords = cfg.Files.Commonwords
-		sitemapsdir = cfg.Dirs.Sitemapsdir
-		mainroute = cfg.Routes.Mainroute
+	// 		addrs = cfg.Dbmgo.Addrs
+	// 		database = cfg.Dbmgo.Database
+	// 		username = cfg.Dbmgo.Username
+	// 		password = cfg.Dbmgo.Password
+	// 		mechanism = cfg.Dbmgo.Mechanism
 
-	}
+	// 		sites = cfg.Sites.Site
+	// 		commonwords = cfg.Files.Commonwords
+	// 		sitemapsdir = cfg.Dirs.Sitemapsdir
+	// 		mainroute = cfg.Routes.Mainroute
 
+	// 	}
+	// }
 }
 
 //CreateArticelePage createPage
@@ -136,6 +144,8 @@ func CreateIndexPage(w http.ResponseWriter, r *http.Request) {
 
 	sitefull := r.Host
 	site := strings.Split(sitefull, ":")[0]
+
+	log.Println("site", site)
 
 	if site == "localhost" {
 

@@ -61,6 +61,14 @@ gcloud compute firewall-rules list
 
 
 
+##UFter upgrade
+
+kubectl delete rc mymongo-controller
+kubectl creare -f kubectl create -f mydb-controller.yml
+
+
+
+
 
 CLEAN UP
 
