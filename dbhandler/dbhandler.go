@@ -48,15 +48,15 @@ func GetAllForStatic(session mgo.Session, site string) []domains.Articlefull {
 }
 
 //GetOneArticle get one artice by mtitle
-func GetOneArticle(session mgo.Session, stitle string) domains.Articlefull {
+func GetOneArticle(session mgo.Session, stitle string) []domains.Articlefull {
 
 	session.SetMode(mgo.Monotonic, true)
 
 	c := session.DB("blog").C("articles")
 
-	var result domains.Articlefull
+	var result []domains.Articlefull
 
-	err := c.Find(bson.M{"stitle": stitle}).Select(nil).One(&result)
+	err := c.Find(bson.M{"stitle": stitle}).Limit(1).All(&result)
 	if err != nil {
 
 		log.Fatal(err)

@@ -51,39 +51,6 @@ func check(e error) {
 func init() {
 	themes, locale, addrs, database, username, password, mechanism, _ = initfunc.GetPar()
 
-	// if os.Getenv("SECRET_USERNAME") != "" {
-
-	// 	username = os.Getenv("SECRET_USERNAME")
-	// 	password = os.Getenv("SECRET_PASSWORD")
-	// 	themes = os.Getenv("THEMES")
-	// 	locale = os.Getenv("LOCALE")
-	// 	database = os.Getenv("DBADMIN")
-	// 	mechanism = "SCRAM-SHA-1"
-	// 	addrs = []string{os.Getenv("ADDRS")}
-	// 	log.Println("mongodbpass", password, "database", database)
-	// } else {
-	// 	var cfg domains.ServerConfig
-	// 	if err := gcfg.ReadFileInto(&cfg, "config.gcfg"); err != nil {
-	// 		log.Fatalln(err.Error())
-
-	// 	} else {
-
-	// 		themes = cfg.General.Themes
-	// 		locale = cfg.General.Locale
-
-	// 		addrs = cfg.Dbmgo.Addrs
-	// 		database = cfg.Dbmgo.Database
-	// 		username = cfg.Dbmgo.Username
-	// 		password = cfg.Dbmgo.Password
-	// 		mechanism = cfg.Dbmgo.Mechanism
-
-	// 		sites = cfg.Sites.Site
-	// 		commonwords = cfg.Files.Commonwords
-	// 		sitemapsdir = cfg.Dirs.Sitemapsdir
-	// 		mainroute = cfg.Routes.Mainroute
-
-	// 	}
-	// }
 }
 
 //CreateArticelePage createPage
@@ -110,32 +77,40 @@ func CreateArticelePage(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	defer dbsession.Close()
-	lp := path.Join("templates", "layout.html")
-	lphead := path.Join("templates", "header_common.html")
-
-	funcMap := template.FuncMap{
-		"marshal": func(a domains.Articlefull) template.JS {
-
-			var articles []domains.Articlefull
-
-			articles = append(articles, a)
-
-			b := ldjsonhandler.Create(articles, "Selected Article")
-
-			return template.JS(b)
-		},
-		"title": func(a domains.Articlefull) string {
-
-			return a.Title
-		},
-	}
-	t, err := template.New("layout.html").Funcs(funcMap).ParseFiles(lp, lphead)
-	check(err)
 
 	article := dbhandler.GetOneArticle(*dbsession, mtitle)
 
-	err = t.Execute(w, article)
-	check(err)
+	if len(article) == 1 {
+
+		lp := path.Join("templates", "layout.html")
+		lphead := path.Join("templates", "header_common.html")
+
+		funcMap := template.FuncMap{
+			"marshal": func(a domains.Articlefull) template.JS {
+
+				var articles []domains.Articlefull
+
+				articles = append(articles, a)
+
+				b := ldjsonhandler.Create(articles, "Selected Article")
+
+				return template.JS(b)
+			},
+			"title": func(a domains.Articlefull) string {
+
+				return a.Title
+			},
+		}
+		t, err := template.New("layout.html").Funcs(funcMap).ParseFiles(lp, lphead)
+		check(err)
+
+		err = t.Execute(w, article[0])
+		check(err)
+
+	} else {
+		http.NotFound(w, r)
+		// http.Error(w, http.StatusText(404), 404)
+	}
 
 }
 
@@ -188,33 +163,39 @@ func CreateIndexPage(w http.ResponseWriter, r *http.Request) {
 
 	allarticles := dbhandler.GetAllForStatic(*dbsession, site)
 
-	var numberstoshuffle []int
-	for num := range allarticles {
+	if len(allarticles) > 0 {
 
-		numberstoshuffle = append(numberstoshuffle, num)
+		var numberstoshuffle []int
+		for num := range allarticles {
 
-	}
-	rand.Seed(time.Now().UTC().UnixNano())
+			numberstoshuffle = append(numberstoshuffle, num)
 
-	shuffle.Ints(numberstoshuffle)
+		}
+		rand.Seed(time.Now().UTC().UnixNano())
 
-	var atricleToInject []domains.Articlefull
+		shuffle.Ints(numberstoshuffle)
 
-	for c, i := range numberstoshuffle {
+		var atricleToInject []domains.Articlefull
 
-		if c < 10 {
+		for c, i := range numberstoshuffle {
 
-			atricleToInject = append(atricleToInject, allarticles[i])
+			if c < 10 {
+
+				atricleToInject = append(atricleToInject, allarticles[i])
+			}
+
 		}
 
-	}
+		if len(atricleToInject) > 0 {
 
-	if len(atricleToInject) > 0 {
+			log.Println(len(atricleToInject))
 
-		log.Println(len(atricleToInject))
+			err = t.Execute(w, atricleToInject)
+			check(err)
+		}
 
-		err = t.Execute(w, atricleToInject)
-		check(err)
+	} else {
+		http.Error(w, http.StatusText(404), 404)
 	}
 
 }
