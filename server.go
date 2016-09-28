@@ -58,27 +58,27 @@ import (
 
 	"github.com/gorilla/mux"
 
+	"github.com/remotejob/goDevice"
 	"github.com/remotejob/kaukotyoeu/handlers/blog"
 	"github.com/remotejob/kaukotyoeu/handlers/robots"
 	"github.com/remotejob/kaukotyoeu/handlers/sitemap"
 )
 
-// var themes string
-// var locale string
-
-// var addrs []string
-// var database string
-// var username string
-// var password string
-// var mechanism string
-
-// var addrsext []string
-// var databaseext string
-// var usernameext string
-// var passwordext string
-// var mechanismext string
-
-// var sites []string
+//Middleware to define mobile
+func Middleware(h http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// log.Println("middleware", r.URL)
+		deviceType := goDevice.GetType(r)
+		if deviceType == "Mobile" {
+			// fmt.Fprintf(w, "<h1>Mobile</h1>")
+			w.Header().Set("Mobile", "true")
+		} else {
+			// detectMobile.Detect(w, r)
+			w.Header().Set("Mobile", "false")
+		}
+		h.ServeHTTP(w, r)
+	})
+}
 
 func main() {
 
@@ -90,9 +90,9 @@ func main() {
 	r.HandleFunc("/job/{locale}/{themes}/{mtitle}.html", blog.CreateArticelePage)
 	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", fs))
 	r.HandleFunc("/", blog.CreateIndexPage)
-
+	// http.Handle("/", Middleware(r))
 	log.Println("Listening at port 8080!!")
 
-	log.Fatal(http.ListenAndServe(":8080", r))
+	log.Fatal(http.ListenAndServe(":8080", Middleware(r)))
 
 }

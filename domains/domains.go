@@ -12,6 +12,7 @@ import (
 type LogRecord struct {
 	Date time.Time
 	Log  string
+	Type string
 }
 
 // Gphrase comment
@@ -114,35 +115,6 @@ type SitemapObj struct {
 	Loc           string
 	Lastmod       string
 }
-
-//type BlogItem struct {
-//	Stopic     string
-//	Topic      string
-//	Stitle     string
-//	Title      string
-//	Contents   string
-//	Created_at time.Time
-//	Updated_at time.Time
-//}
-//
-//type Blog struct {
-//	//	Topic string
-//	Items map[string][]BlogItem
-//}
-//
-//type KeywordObj struct {
-//	Keyword string
-//	Cl      int
-//	Lang    string
-//}
-//
-//type Contents struct {
-//	Title      string
-//	Moto       string
-//	Contents   string
-//	Created_at time.Time
-//	Updated_at time.Time
-//}
 
 //Pages struct keep sitemap obj
 type Pages struct {

@@ -28,16 +28,23 @@ var username string
 var password string
 var mechanism string
 
-func checkReq(r *http.Request) {
+func checkReq(w http.ResponseWriter, r *http.Request, mobile string) {
 
 	if strings.Contains(r.Referer(), "www.google") {
 
 		now := time.Now()
 		log := r.Referer() + "," + r.RequestURI
 		record := domains.LogRecord{Date: now,
-			Log: log}
+			Log: log, Type: "google"}
 		go insertlog.InsertIntoDB(record)
 
+	}
+	if mobile == "true" {
+		now := time.Now()
+		log := r.Referer() + "," + r.UserAgent()
+		record := domains.LogRecord{Date: now,
+			Log: log, Type: "mobile"}
+		go insertlog.InsertIntoDB(record)
 	}
 
 }
@@ -56,7 +63,15 @@ func init() {
 //CreateArticelePage createPage
 func CreateArticelePage(w http.ResponseWriter, r *http.Request) {
 
-	checkReq(r)
+	var lp string
+	var headercommon string
+	var newtemplate string
+
+	sitefull := r.Host
+	site := strings.Split(sitefull, ":")[0]
+	mobile := w.Header().Get("Mobile")
+	log.Println("article site", site, "mobile", mobile)
+	checkReq(w, r, mobile)
 
 	vars := mux.Vars(r)
 
@@ -78,13 +93,30 @@ func CreateArticelePage(w http.ResponseWriter, r *http.Request) {
 	}
 	defer dbsession.Close()
 
+	if mobile == "false" {
+		lp = path.Join("templates", "layout.html")
+		headercommon = path.Join("templates", "header_common.html")
+		newtemplate = "layout.html"
+
+	} else {
+		lp = path.Join("templates", "m_layout.html")
+		headercommon = path.Join("templates", "m_header_common.html")
+		newtemplate = "m_layout.html"
+	}
+
 	article := dbhandler.GetOneArticle(*dbsession, mtitle)
 
 	if len(article) == 1 {
+		if mobile == "false" {
+			lp = path.Join("templates", "layout.html")
+			headercommon = path.Join("templates", "header_common.html")
+			newtemplate = "layout.html"
 
-		lp := path.Join("templates", "layout.html")
-		lphead := path.Join("templates", "header_common.html")
-
+		} else {
+			lp = path.Join("templates", "m_layout.html")
+			headercommon = path.Join("templates", "m_header_common.html")
+			newtemplate = "m_layout.html"
+		}
 		funcMap := template.FuncMap{
 			"marshal": func(a domains.Articlefull) template.JS {
 
@@ -101,7 +133,7 @@ func CreateArticelePage(w http.ResponseWriter, r *http.Request) {
 				return a.Title
 			},
 		}
-		t, err := template.New("layout.html").Funcs(funcMap).ParseFiles(lp, lphead)
+		t, err := template.New(newtemplate).Funcs(funcMap).ParseFiles(lp, headercommon)
 		check(err)
 
 		err = t.Execute(w, article[0])
@@ -117,12 +149,17 @@ func CreateArticelePage(w http.ResponseWriter, r *http.Request) {
 //CreateIndexPage create Index Page
 func CreateIndexPage(w http.ResponseWriter, r *http.Request) {
 
+	var lp string
+	var headercommon string
+	var newtemplate string
+
 	sitefull := r.Host
 	site := strings.Split(sitefull, ":")[0]
+	mobile := w.Header().Get("Mobile")
+	log.Println("index site", site, "mobile", mobile)
+	checkReq(w, r, mobile)
 
-	log.Println("site", site)
-
-	if site == "localhost" {
+	if site == "localhost" || site == "192.168.1.4" {
 
 		site = "www.kaukotyo.eu"
 
@@ -144,9 +181,17 @@ func CreateIndexPage(w http.ResponseWriter, r *http.Request) {
 	}
 	defer dbsession.Close()
 
-	lp := path.Join("templates", "home_page.html")
+	if mobile == "false" {
+		lp = path.Join("templates", "home_page.html")
+		headercommon = path.Join("templates", "header_common.html")
+		newtemplate = "home_page.html"
 
-	headercommon := path.Join("templates", "header_common.html")
+	} else {
+		lp = path.Join("templates", "m_home_page.html")
+		headercommon = path.Join("templates", "m_header_common.html")
+		newtemplate = "m_home_page.html"
+	}
+
 	funcMap := template.FuncMap{
 		"marshal": func(articles []domains.Articlefull) template.JS {
 			b := ldjsonhandler.Create(articles, "Index Page")
@@ -158,7 +203,7 @@ func CreateIndexPage(w http.ResponseWriter, r *http.Request) {
 		},
 	}
 
-	t, err := template.New("home_page.html").Funcs(funcMap).ParseFiles(lp, headercommon)
+	t, err := template.New(newtemplate).Funcs(funcMap).ParseFiles(lp, headercommon)
 	check(err)
 
 	allarticles := dbhandler.GetAllForStatic(*dbsession, site)

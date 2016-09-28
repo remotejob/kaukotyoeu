@@ -10,7 +10,7 @@ spec:
     spec:
       containers:
       - name: godocker
-        image:  gcr.io/jntlserv0/godocker:0.8
+        image:  gcr.io/jntlserv0/godocker:0.10
         env:
         - name: THEMES
           value: job
