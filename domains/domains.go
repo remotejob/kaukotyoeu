@@ -10,9 +10,9 @@ import (
 
 //LogRecord substitude Nginx log capacity
 type LogRecord struct {
-	Date time.Time
-	Log  string
-	Type string
+	Date  time.Time
+	Log   string
+	Ltype string
 }
 
 // Gphrase comment

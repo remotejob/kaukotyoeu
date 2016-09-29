@@ -30,20 +30,26 @@ var mechanism string
 
 func checkReq(w http.ResponseWriter, r *http.Request, mobile string) {
 
+	now := time.Now()
+	var record domains.LogRecord
+	var ltype string
+	var log string
+
 	if strings.Contains(r.Referer(), "www.google") {
 
-		now := time.Now()
-		log := r.Referer() + "," + r.RequestURI
-		record := domains.LogRecord{Date: now,
-			Log: log, Type: "google"}
-		go insertlog.InsertIntoDB(record)
+		ltype = "google"
 
 	}
-	if mobile == "true" {
-		now := time.Now()
-		log := r.Referer() + "," + r.UserAgent()
-		record := domains.LogRecord{Date: now,
-			Log: log, Type: "mobile"}
+
+	if strings.Contains(mobile, "true") {
+
+		ltype = "mobile"
+
+	}
+
+	if len(ltype) > 1 {
+		log = r.Referer() + "," + r.RequestURI + "," + r.UserAgent()
+		record = domains.LogRecord{Date: now, Log: log, Ltype: ltype}
 		go insertlog.InsertIntoDB(record)
 	}
 
